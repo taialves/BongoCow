@@ -22,11 +22,13 @@
       }
       #farm-box {
         position: relative;
+        width: 100%;
+        height: auto;
         overflow: hidden;
       }
       #farm {
         display: block;
-        max-width: 100%;
+        width: 100%;
         height: auto;
       }
       .cow {
@@ -72,6 +74,14 @@
         top: 10%;
         width: 100%;
       }
+      #farm-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: auto;
+        position: relative;
+      }
     </style>
   </head>
   <body>
@@ -84,10 +94,14 @@
         <img id="farm" src="background.jpg" alt="Fazenda" />
       </div>
     </div>
+    <audio id="nature-sound" loop>
+      <source src="audio.mp4" type="audio/mp4" />
+      Seu navegador não suporta áudio HTML5.
+    </audio>
 
     <script>
       const farm = document.getElementById("farm-box");
-
+      const audio = document.getElementById("nature-sound");
       const phrases = [
         "Muuu! Bbzão vc é incrível! 💕",
         "Ficar agarradinho com vc no rio foi mágico! 🌾",
@@ -117,6 +131,9 @@
         " 💬Na garupa da sua moto, percorrendo aquela estrada de terra, senti que estava vivendo algo único.",
       ];
 
+      farm.addEventListener("click", () => {
+        audio.play();
+      });
       function createCow() {
         let cow = document.createElement("img");
         cow.src = "cow.gif";
