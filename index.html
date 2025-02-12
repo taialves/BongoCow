@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🐄 Fazenda Salamina 🏡</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        background: black;
+        text-align: center;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+      }
+      #farm-box {
+        position: relative;
+        overflow: hidden;
+      }
+      #farm {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+      .cow {
+        position: absolute;
+        width: 120px;
+        cursor: pointer;
+        animation: moveLeft 16s linear infinite;
+      }
+      .balloon {
+        position: absolute;
+        background: white;
+        border-radius: 10px;
+        z-index: 1000;
+        padding: 5px 10px;
+        font-size: 14px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        display: none;
+        max-width: 300px;
+        transition: opacity 0.7s;
+      }
+      @keyframes moveLeft {
+        from {
+          left: 100%;
+        }
+        to {
+          left: -500px;
+        }
+      }
+      /* Nome da Fazenda */
+      h2 {
+        font-size: 36px;
+        font-weight: bold;
+        color: white;
+        text-shadow: 2px 2px 5px black;
+      }
+      /* Instrução */
+      p {
+        color: white;
+        text-shadow: 1px 1px 3px black;
+      }
+      .header {
+        position: absolute;
+        top: 10%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="farm-container">
+      <div id="farm-box">
+        <div class="header">
+          <h2>🌾 Fazenda Salamina 🌾</h2>
+          <p>🐄 Clique nas vaquinhas para ver o que elas dizem! 🐄</p>
+        </div>
+        <img id="farm" src="background.jpg" alt="Fazenda" />
+      </div>
+    </div>
+
+    <script>
+      const farm = document.getElementById("farm-box");
+
+      const phrases = [
+        "Muuu! Bbzão vc é incrível! 💕",
+        "Ficar agarradinho com vc no rio foi mágico! 🌾",
+        "To com muita saudade de vc 🐮💖",
+        "Amei conhecer sua familia! 😍",
+        "Saudade do seu toque ! 🥬",
+        "Seu beijo é o melhor do mundo ! 🥬",
+        "kkk seu tonhão pensa mt em vc ! 🥬",
+        "Bom trabalho bbzao ! 🥬",
+        "Nem a falta de ventilador nos impediu de ficar agarradin 🥬",
+        "Ir ao seu encontro me trouxe paz ! 🥬",
+        "Saudade do seu abraço 🥹",
+        "Se beleza fosse mato, cê era a fazenda inteira!🌾💚",
+        "Oxe, você é igual fogueira de São João:  chega perto, já me aquece! 🔥😍",
+        "Cê é igual café no fogão de lenha: forte, quente e viciante! ☕🔥",
+        "Saiba que vc pode sempre contar comigo!",
+        "Desde o primeiro dia q te conheci, eu pensei: Vale a pena!",
+        "Nao sei oq o futuro nos reserva, mas quero aproveitar cada oportunidade 💕🙌",
+        "Você não é trem, mas passou na minha vida e agora só penso em viajar com você!🚂💘",
+        "💌 💬 Pode parecer loucura, mas em menos de uma semana você já se tornou alguém especial.",
+        "Cada instante foi especial, e eu carreguei todas essas memórias comigo no caminho de volta.",
+        "mesmo com toda a correria e o caos da mudança, tudo ali me pareceu leve.",
+        "O que poderia ser só uma bagunça de caixas e móveis virou um espaço cheio de conforto pra mim 🏡✨💛",
+        "Quando era hora de voltar para a cidade, eu já sabia que sentiria saudade...",
+        "A água morna nos envolvia, o som da natureza preenchia o silêncio, e no meio do rio, aconteceu nosso primeiro beijo.",
+        "Parece bobo mas vc me encantou🤍🏡🌾",
+        " 💬Na garupa da sua moto, percorrendo aquela estrada de terra, senti que estava vivendo algo único.",
+      ];
+
+      function createCow() {
+        let cow = document.createElement("img");
+        cow.src = "cow.gif";
+        cow.classList.add("cow");
+
+        let farmHeight = farm.clientHeight;
+        let cowY = farmHeight * 0.65 + Math.random() * (farmHeight * 0.1);
+        cow.style.top = `${cowY}px`;
+
+        farm.appendChild(cow);
+
+        let balloon = document.createElement("div");
+        balloon.classList.add("balloon");
+        balloon.innerText = "";
+        farm.appendChild(balloon);
+
+        function updateBalloon() {
+          let cowRect = cow.getBoundingClientRect();
+          let farmRect = farm.getBoundingClientRect();
+
+          let cowX = cowRect.left - farmRect.left;
+          let cowY = cowRect.top - farmRect.top;
+
+          balloon.style.left = `${cowX + 40}px`;
+          balloon.style.top = `${cowY - 40}px`;
+        }
+
+        cow.addEventListener("click", () => {
+          let randomPhrase =
+            phrases[Math.floor(Math.random() * phrases.length)];
+          balloon.innerText = randomPhrase;
+          balloon.style.display = "block";
+
+          function animateBalloon() {
+            updateBalloon();
+            if (balloon.style.display === "block") {
+              requestAnimationFrame(animateBalloon);
+            }
+          }
+
+          animateBalloon();
+
+          setTimeout(() => {
+            balloon.style.display = "none";
+          }, 7000);
+        });
+
+        cow.addEventListener("animationiteration", () => {
+          cowY = farm.clientHeight * 0.7 + Math.random() * (farmHeight * 0.1);
+          cow.style.top = `${cowY}px`;
+        });
+      }
+
+      function startCows() {
+        for (let i = 0; i < 5; i++) {
+          setTimeout(createCow, i * 2000);
+        }
+      }
+
+      window.onload = () => {
+        startCows();
+      };
+    </script>
+  </body>
+</html>
